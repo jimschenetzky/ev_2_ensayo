@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="style.css" />
+        <title>Jose_Ims</title>
+        <link rel="icon" type="image/x-icon" href="C:\Users\jovas\Desktop\Diseño y nuevos medios\ev_2\favicon.png">
+    </head>
+    <body>
+        <nav>
+            <h1><a href="index.html">Josefina Imschenetzky</a></h1>
+            <select onchange="location = this.value;">
+                <option value="index.html">INDEX</option>
+                <option value="astrology.html" selected>ASTROLOGY</option>
+                <option value="astronomy.html">ASTRONOMY</option>
+                <option value="earthquakes.html">EARTHQUAKES</option>
+                <option value="weather.html">WEATHER</option>
+            </select>
+        </nav>
+        <header style="display: none;">
+            <div>Marque uno:</div>
+            <div><input type="radio" name="selecciona" value="todos" checked />Todos</div>
+            <div><input type="radio" name="selecciona" value="agua" />Agua</div>
+            <div><input type="radio" name="selecciona" value="aire" />Aire</div>
+            <div><input type="radio" name="selecciona" value="fuego" />Fuego</div>
+            <div><input type="radio" name="selecciona" value="tierra" />Tierra</div>
+        </header>
+        <aside></aside>
+        <main></main>
+        <script>
+            const alternativas = document.querySelector("header");
+            const detalles = document.querySelector("aside");
+            const respuesta = document.querySelector("main");
+            var datos;
+            async function estudiantes() {
+                const data = await fetch("https://raw.githubusercontent.com/jimschenetzky/Clase07-08/main/_curso.json");
+                datos = await data.json();
+                alternativas.removeAttribute("style");
+                datos.forEach((x) => {
+                    if(x.zodiaco.signo !== ""){
+                        respuesta.innerHTML += `<article><div><img src="${x.avatar}"></div><div><p><a href="integrante.html?lista=${x.lista}">${x.nombres.split(" ")[0]} ${x.apellidos.split(" ")[0]}</a></p><p>${
+                            x.zodiaco.signo
+                        }</p></div></article>`;
+                    }
+                });
+            }
+            estudiantes().catch((error) => console.error(error));
+
+            function compatibilidad(valor) {
+                respuesta.innerHTML = ``;
+                detalles.innerHTML = ``;
+
+                //Lo que sigue lo saqué de https://www.clara.es/
+
+                if (valor == "fuego") {
+                    about =
+                        "<em>Aries, Leo y Sagitario</em>: Los tres comparten características que los distinguen de los demás, como el ser activos, enérgicos y estar siempre dispuestos para la acción.";
+                } else if (valor == "agua") {
+                    about =
+                        "<em>Cáncer, Escorpio y Piscis</em>: son los tres signos del zodiaco a los que la astrología occidental vincula con el elemento agua, una fuerza de la naturaleza que les dota de una sensibilidad e intuición que otros signos no tienen.";
+                } else if (valor == "aire") {
+                    about =
+                        "<em>Géminis, Libra y Acuario</em>: son los signos del elemento Aire y si algo los caracteriza frente a todos los demás elementos del zodiaco eso es su inteligencia y su capacidad de razonamiento. Como su elemento bien indica, los que están vinculados con el aire son personas que se moldean a sí mismas sin ninguna dificultad.";
+                } else if (valor == "tierra"){
+                    about =
+                        "<em>Tauro, Virgo y Capricornio</em>: están fuertemente conectados con lo terrenal. No se dejan llevar por las ensoñaciones, suelen saber el lugar que ocupan en el mundo y son personas que tienden siempre a la practicidad, la analítica y la concreción. No quieren líos.";
+                } else {
+                    about = "Diseño y nuevos medios."
+                }
+
+                detalles.innerHTML += `<div><p>${about}</p></div>`;
+
+                datos.forEach((x) => {
+                    if (valor == x.zodiaco.elemento) {
+                        respuesta.innerHTML += `<article><div><img src="${x.avatar}"></div><div><p><a href="integrante.html?lista=${x.lista}">${x.nombres.split(" ")[0]} ${x.apellidos.split(" ")[0]}</a></p><p>${
+                            x.zodiaco.signo
+                        }</p></div></article>`;
+                    }
+                });
+            }
+
+            const seleccionado = document.querySelectorAll('input[name="selecciona"]');
+
+            seleccionado.forEach((i) => {
+                i.addEventListener("change", function () {
+                    var valor = this.value;
+                    if (valor !== "todos"){
+                        console.log(valor);
+                        compatibilidad(valor);
+                    } else {
+                        window.location.reload();
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

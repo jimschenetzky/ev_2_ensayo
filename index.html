@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Jose_Ims</title>
+    <link rel="icon" type="image/x-icon" href="C:\Users\jovas\Desktop\Diseño y nuevos medios\ev_2\favicon.png">
+</head>
+<body>
+    <nav>
+        <h1><a href="index.html">Josefina Imschenetzky</a></h1>
+        <select onchange="location = this.value;">
+            <option value="index.html" selected>INDEX</option>
+            <option value="astrology.html">ASTROLOGY</option>
+            <option value="astronomy.html">ASTRONOMY</option>
+            <option value="earthquakes.html">EARTHQUAKES</option>
+            <option value="weather.html">WEATHER</option>
+        </select>
+    </nav>
+    <section style="min-height: 80vh">
+        <blockquote><div id="loader"></div></blockquote>
+    </section>
+    <footer>
+        <a href="https://github.com/profesorfaco/dno037-2023-2">Diseño y nuevos medios</a>
+        <a href="https://github.com/profesorfaco/dno037-2023-2/tree/main/clase-07">20 de septiembre, 2023</a>
+    </footer>
+    <script>            
+        const alternativas = document.querySelector("header");
+        const detalles = document.querySelector("aside");
+        const respuesta = document.querySelector("main");
+        var datos;
+        
+        async function estudiantes() {
+            const data = await fetch("https://raw.githubusercontent.com/jimschenetzky/Clase07-08/main/_curso.json");
+            datos = await data.json();
+            document.querySelector("blockquote").innerHTML = `${datos[16].motivo}`;
+        }
+        
+        estudiantes().catch((error) => console.error(error));
+        document.querySelector("#loader").style.display = "none";
+    </script>
+</body>
+</html>
